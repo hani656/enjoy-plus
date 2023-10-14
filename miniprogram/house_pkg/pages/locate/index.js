@@ -1,66 +1,73 @@
 // house_pkg/pages/locate/index.ts
+
+// 导入位置服务实例
+import QQMap from '../../../utils/qqmap'
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    points: [],
+    address: '',
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad() {
-
+    // 获取用户经纬度
+    this.getLocation()
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  // 获取用户的位置
+  async getLocation() {
+    // 调用小和序 API 获取用户位置
+    const { latitude, longitude } = await wx.getLocation()
+    // console.log(latitude, longitude)
+    this.getPoint(latitude, longitude)
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
+  // 选择新的位置
+  async chooseLocation() {
+    // 调用小程序 API 获取新的位置
+    const { latitude, longitude } = await wx.chooseLocation()
 
+    // 获取新的位置附近的小区
+    this.getPoint(latitude, longitude)
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
+  getPoint(latitude, longitude) {
+    // 显示loading提示
+    wx.showLoading({
+      title: '正在加载...',
+    })
 
+    // 逆地址解析（根据经纬度来获取地址）
+    QQMap.reverseGeocoder({
+      location: [latitude, longitude].join(','),
+      success: ({ result: { address } }) => {
+        // console.log(address)
+        // 数据数据
+        this.setData({ address })
+      },
+    })
+
+    QQMap.search({
+      keyword: '住宅小区', //搜索关键词
+      location: [latitude, longitude].join(','), //设置周边搜索中心点
+      page_size: 5,
+      success: (result) => {
+        // console.log(result)
+        // 过滤掉多余的数据
+        const points = result.data.map(({ id, title, _distance }) => {
+          return { id, title, _distance }
+        })
+
+        // console.log(points)
+        // 渲染数据
+        this.setData({ points })
+      },
+      fail: (err) => {
+        console.log(err.message)
+      },
+      complete: () => {
+        // 隐藏loading提示
+        wx.hideLoading()
+      },
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
 })
