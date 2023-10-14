@@ -16,7 +16,10 @@ Page({
   // 获取用户的位置
   async getLocation() {
     // 调用小和序 API 获取用户位置
-    const { latitude, longitude } = await wx.getLocation()
+    const {
+      latitude,
+      longitude
+    } = await wx.getLocation()
     // console.log(latitude, longitude)
     this.getPoint(latitude, longitude)
   },
@@ -24,7 +27,10 @@ Page({
   // 选择新的位置
   async chooseLocation() {
     // 调用小程序 API 获取新的位置
-    const { latitude, longitude } = await wx.chooseLocation()
+    const {
+      latitude,
+      longitude
+    } = await wx.chooseLocation()
 
     // 获取新的位置附近的小区
     this.getPoint(latitude, longitude)
@@ -39,10 +45,16 @@ Page({
     // 逆地址解析（根据经纬度来获取地址）
     QQMap.reverseGeocoder({
       location: [latitude, longitude].join(','),
-      success: ({ result: { address } }) => {
+      success: ({
+        result: {
+          address
+        }
+      }) => {
         // console.log(address)
         // 数据数据
-        this.setData({ address })
+        this.setData({
+          address
+        })
       },
     })
 
@@ -53,13 +65,23 @@ Page({
       success: (result) => {
         // console.log(result)
         // 过滤掉多余的数据
-        const points = result.data.map(({ id, title, _distance }) => {
-          return { id, title, _distance }
+        const points = result.data.map(({
+          id,
+          title,
+          _distance
+        }) => {
+          return {
+            id,
+            title,
+            _distance
+          }
         })
 
         // console.log(points)
         // 渲染数据
-        this.setData({ points })
+        this.setData({
+          points
+        })
       },
       fail: (err) => {
         console.log(err.message)

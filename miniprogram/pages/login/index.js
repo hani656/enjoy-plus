@@ -15,7 +15,7 @@ Page({
     // 获取跳转路径
     this.redirectURL = redirectURL
     this.routeType = routeType
-    console.log(routeType)
+    // console.log(routeType)
   },
 
   // wxValidate 提供了属性，用来定义验证规则

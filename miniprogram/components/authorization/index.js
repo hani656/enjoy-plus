@@ -15,12 +15,12 @@ Component({
       // 变更登录状态
       this.setData({isLogin})
 
-      // 获取页面站
+      // 获取页面栈
       const pageStack = getCurrentPages()
       // 获取页面路径
       const currentPage = pageStack.pop()
 
-      // console.log(currentPage)
+      console.log(currentPage)
 
       // 未登录情况下跳转到登录页面
       if(!isLogin){
