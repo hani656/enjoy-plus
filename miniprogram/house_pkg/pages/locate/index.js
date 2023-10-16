@@ -22,6 +22,7 @@ Page({
     } = await wx.getLocation()
     // console.log(latitude, longitude)
     this.getPoint(latitude, longitude)
+    console.log('终点位置:', latitude, longitude)
   },
 
   // 选择新的位置
@@ -31,9 +32,10 @@ Page({
       latitude,
       longitude
     } = await wx.chooseLocation()
-
     // 获取新的位置附近的小区
     this.getPoint(latitude, longitude)
+
+    console.log('起点位置:', latitude, longitude)
   },
 
   getPoint(latitude, longitude) {

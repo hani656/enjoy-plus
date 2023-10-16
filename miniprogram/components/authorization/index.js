@@ -20,7 +20,7 @@ Component({
       // 获取页面路径
       const currentPage = pageStack.pop()
 
-      console.log(currentPage)
+      // console.log(currentPage)
 
       // 未登录情况下跳转到登录页面
       if(!isLogin){

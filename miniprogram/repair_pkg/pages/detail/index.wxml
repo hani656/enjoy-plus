@@ -1,39 +1,44 @@
 <scroll-view scroll-y enhanced show-scrollbar="{{false}}">
   <view class="repair-detail">
-    <view class="polyline">
-      <map style="width: 100%; height: 100%;" scale="16" latitude="{{latitude}}" longitude="{{longitude}}"></map>
+    <view wx:if="{{repairDetail.status === 2}}" class="polyline">
+      <map
+        style="width: 100%; height: 100%;"
+        scale="16"
+        polyline="{{polyline}}"
+        markers="{{markers}}"
+        latitude="{{latitude}}"
+        longitude="{{longitude}}"
+      ></map>
     </view>
 
     <van-cell-group border="{{false}}" title="房屋信息">
-      <van-cell title="北京西三旗花园1号楼 101">
-        <text class="tag info">受理中</text>
+      <van-cell title="{{repairDetail.houseInfo}}">
+        <text wx:if="{{repairDetail.status === 0}}" class="tag cancel">已取消</text>
+        <text wx:if="{{repairDetail.status === 1}}" class="tag info">受理中</text>
+        <text wx:if="{{repairDetail.status === 2}}" class="tag success">上门中</text>
+        <text wx:if="{{repairDetail.status === 3}}" class="tag complete">已完成</text>
       </van-cell>
     </van-cell-group>
 
     <van-cell-group title="报修信息" border="{{false}}">
-      <van-cell title-width="200rpx" title="维修项目" value="水暖" />
-      <van-cell title-width="200rpx" title="手机号码" value="18332566962" />
-      <van-cell title-width="200rpx" title="预约日期" value="2022/08/22" />
-      <van-cell
-        title="问题描述"
-        label="每天晚上7点到8点热水都很不稳定，时有时无。每天晚上7点到8点热水都很不稳定，时有时无。每天晚上7点到8点热水都很不稳定，时有时无。每天晚上7点到8点热水都很不稳定，时有时无。每天晚上7点到8点热水都很不稳定，时有时无。每天晚上7点到8点热水都很不稳定，时有时无。"
-      />
+      <van-cell title-width="200rpx" title="维修项目" value="{{repairDetail.repairItemName}}" />
+      <van-cell title-width="200rpx" title="手机号码" value="{{repairDetail.mobile}}" />
+      <van-cell title-width="200rpx" title="预约日期" value="{{repairDetail.appointment}}" />
+      <van-cell title="问题描述" label="{{repairDetail.description}}" />
     </van-cell-group>
 
     <view class="attachment">
       <view class="title">问题附件</view>
       <scroll-view scroll-x>
-        <image src="https://enjoy-plus.oss-cn-beijing.aliyuncs.com/uploads/attachment.jpg"></image>
-        <image src="https://enjoy-plus.oss-cn-beijing.aliyuncs.com/uploads/attachment.jpg"></image>
-        <image src="https://enjoy-plus.oss-cn-beijing.aliyuncs.com/uploads/attachment.jpg"></image>
-        <image src="https://enjoy-plus.oss-cn-beijing.aliyuncs.com/uploads/attachment.jpg"></image>
-        <image src="https://enjoy-plus.oss-cn-beijing.aliyuncs.com/uploads/attachment.jpg"></image>
+        <image wx:for="{{repairDetail.attachment}}" wx:key="id" src="{{item.url}}"></image>
       </scroll-view>
     </view>
   </view>
 </scroll-view>
 
 <view class="toolbar">
-  <view class="button-text active">修改信息</view>
-  <view bind:tap="test" class="button-text">取消报修</view>
+  <view mark:id="{{repairDetail.id}}" bind:tap="editRepair" class="button-text active">修改信息</view>
+  <view wx:if="{{repairDetail.status === 1}}" mark:id="{{repairDetail.id}}" bind:tap="cancelRepair" class="button-text"
+    >取消报修</view
+  >
 </view>

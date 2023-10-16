@@ -1,39 +1,16 @@
-<block wx:if="{{true}}">
-  <scroll-view show-scrollbar="{{false}}" enhanced scroll-y>
+<block wx:if="{{!isEmpty}}">
+  <scroll-view bind:scrolltolower="getMoreVisitor" show-scrollbar="{{false}}" enhanced scroll-y>
     <view class="visitor">
       <view class="visitor-title">我的访客</view>
       <view class="visitor-list">
-        <van-cell-group border="{{false}}" bind:tap="goPassport">
-          <van-cell size="large" title="北京富力家园1单元101室">
-            <text class="tag success">生效中</text>
+        <van-cell-group wx:for="{{visitorList}}" wx:key="id" border="{{false}}" bind:tap="goPassport">
+          <van-cell size="large" title="{{item.houseInfo}}">
+            <text wx:if="{{item.status === 1}}" class="tag success">生效中</text>
+            <text wx:if="{{item.status === 0}}" class="tag cancel">生效中</text>
           </van-cell>
-          <van-cell title="访客姓名" border="{{false}}" value="水暖" />
-          <van-cell title="手机号码" border="{{false}}" value="18332566962" />
-          <van-cell title="访问日期" border="{{false}}" value="2022/08/13" />
-        </van-cell-group>
-        <van-cell-group border="{{false}}" bind:tap="goPassport">
-          <van-cell size="large" title="北京富力家园1单元101室">
-            <text class="tag success">生效中</text>
-          </van-cell>
-          <van-cell title="访客姓名" border="{{false}}" value="水暖" />
-          <van-cell title="手机号码" border="{{false}}" value="18332566962" />
-          <van-cell title="访问日期" border="{{false}}" value="2022/08/13" />
-        </van-cell-group>
-        <van-cell-group border="{{false}}" bind:tap="goPassport">
-          <van-cell size="large" title="北京富力家园1单元101室">
-            <text class="tag success">生效中</text>
-          </van-cell>
-          <van-cell title="访客姓名" border="{{false}}" value="水暖" />
-          <van-cell title="手机号码" border="{{false}}" value="18332566962" />
-          <van-cell title="访问日期" border="{{false}}" value="2022/08/13" />
-        </van-cell-group>
-        <van-cell-group border="{{false}}" bind:tap="goPassport">
-          <van-cell size="large" title="北京富力家园1单元101室">
-            <text class="tag cancel">已失效</text>
-          </van-cell>
-          <van-cell title="访客姓名" border="{{false}}" value="水暖" />
-          <van-cell title="手机号码" border="{{false}}" value="18332566962" />
-          <van-cell title="访问日期" border="{{false}}" value="2022/08/13" />
+          <van-cell title="访客姓名" border="{{false}}" value="{{item.name}}" />
+          <van-cell title="手机号码" border="{{false}}" value="{{item.mobile}}" />
+          <van-cell title="访问日期" border="{{false}}" value="{{item.visitDate}}" />
         </van-cell-group>
       </view>
     </view>
